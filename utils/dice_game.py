@@ -2,6 +2,7 @@ import random
 
 class DiceGame:
     def __init__(self):
+        self.total_rounds = 3
         self.stage = 1
         self.score = 0
 
@@ -18,19 +19,22 @@ class DiceGame:
 
     def play_stage(self):
         wins = 0
-        while True:
+        for _ in range(self.total_rounds):
             result = self.play_round()
             if result == 1:
                 wins += 1
-                if wins == 3:
-                    self.score += 4
-                    print("You won this stage!")
-                    return True
+                print("You won this round!")
             elif result == -1:
-                print("You lost this stage. Game over.")
-                return False
+                print("You lost this round.")
             else:
                 print("It's a tie. Let's play again.")
+        if wins >= self.total_rounds // 2 + 1:
+            self.score += 4
+            print("You won this stage!")
+            return True
+        else:
+            print("You lost this stage. Game over.")
+            return False
 
     def play_game(self):
         while True:
