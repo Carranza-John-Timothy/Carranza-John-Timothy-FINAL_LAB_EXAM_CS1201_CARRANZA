@@ -12,26 +12,27 @@ class GameManager:
         with open(self.game_file, 'r') as f:
             games = []
             for line in f.readlines():
-                game_id, username, score, datetime = line.strip().split(',')
+                game_id, username, score, game_datetime = line.strip().split(',')
                 games.append({
                     'id': game_id,
                     'username': username,
                     'score': int(score),
-                    'datetime': datetime
+                    'datetime': game_datetime
                 })
             return games
 
     def save_game(self, username, score):
         game_id = str(datetime.datetime.now()).replace(' ', '_')
+        game_datetime = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         with open(self.game_file, 'a') as f:
-            f.write(f"{game_id},{username},{score},{datetime.datetime.now()}\n")
+            f.write(f"{game_id},{username},{score},{game_datetime}\n")
         self.games.append({
             'id': game_id,
             'username': username,
             'score': score,
-            'datetime': datetime.datetime.now()
+            'datetime': game_datetime
         })
 
-    def get_top_scores(self, num_scores):
+    def get_top_scores(self, num_scores=10):
         sorted_games = sorted(self.games, key=lambda x: x['score'], reverse=True)
         return sorted_games[:num_scores]
